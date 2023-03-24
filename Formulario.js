@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import RadioGroup from "react-native-radio-buttons-group";
 import { Picker } from "@react-native-picker/picker";
-//import logo from "./assets/logo_Integrador.jpeg";
+import { useNavigation } from "@react-navigation/native";
 
 const Formulario = () => {
   const [folio, setFolio] = useState("");
@@ -22,18 +22,35 @@ const Formulario = () => {
   const [ptc, setPtc] = useState("");
   const [pa, setPa] = useState("");
   const [selectedValue, setSelectedValue] = useState("0");
+  const navigation = useNavigation();
 
   const handleValueChange = (itemValue) => {
     setSelectedValue(itemValue);
   };
   const handleSubmit = () => {
-    if (selectedValue === "0") {
+    if (
+      !folio ||
+      !nombreSolicitante ||
+      !matricula ||
+      !cuatrimestre ||
+      !estudiante ||
+      !ptc ||
+      !pa ||
+      !selectedValue
+    ) {
       Alert.alert(
-        "No se seleciono ninguna carrera",
-        "Por favor, selecione una carrera"
+        "No se llenaron todos los campos",
+        "Por favor, lleno los campos"
       );
       return;
     } else {
+      if (selectedValue === "0") {
+        Alert.alert(
+          "No se seleciono ninguna carrera",
+          "Por favor, selecione una carrera"
+        );
+        return;
+      }
       const solicitud = {
         folio,
         nombreSolicitante,
@@ -48,6 +65,8 @@ const Formulario = () => {
       // Enviar solicitud al servidor o almacenar localmente
       Alert.alert("Reservación exitosa");
       console.log(solicitud) + `Selected value: ${selectedValue}`;
+      navigation.navigate("Libros");
+
     }
   };
 

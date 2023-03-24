@@ -22,22 +22,27 @@ const InicioSesion = () => {
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
-  
 
   const handleSignIn = () => {
+    if (!email || !password) {
+      Alert.alert(
+        "No se llenaron todos los campos",
+        "Por favor, lleno los campos"
+      );
+    }
     signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        console.log("Inicio de sesion");
-        const user = userCredential.user;
-        navigation.navigate("Libros");
-        Alert.alert("Bienvenido" + " " + email);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+        .then((userCredential) => {
+          console.log("Inicio de sesion");
+          const user = userCredential.user;
+          navigation.navigate("Libros");
+          Alert.alert("Bienvenido" + " " + email);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
 
-    setEmail("");
-    setPassword("");
+      setEmail("");
+      setPassword("");
   };
   const handleCreateAccount = () => {
     navigation.navigate("Nuevo Usuario");
